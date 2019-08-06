@@ -3,18 +3,14 @@ spec:
     spec:
       containers:
         - env:
-          - name: spring_jpa_database
-            value: mysql
-          - name: spring_datasource_url
-            value: jdbc:mysql://mysql/test?useSSL=false
-          - name: spring_datasource_username
+            - name: MYSQL_ROOT_PASSWORD
+              value: jdbc:mysql://testdb.c7rcwy3juna9.ap-south-1.rds.amazonaws.com
             valueFrom:
+              # rather than embed sensitive details in this config
+              # we reference another Kubernetes object
+              # in this case, the Secret with the name: mysql-credentials
               secretKeyRef:
-                name: mysql-secret
-                key: MYSQL_USER
-          - name: spring_datasource_password
-            valueFrom:
-              secretKeyRef:
-                name: mysql-secret
-                key: MYSQL_PASSWORD
+                name: mysql-credentials
+                # references the rootpw key-value pair from the mysql-credentials Secret
+                key: rootpw
           
